@@ -556,6 +556,18 @@ Hand in a file with the queries, the four numbers from task 2, the error text fr
 
 ## Português (Brasil)
 
+Para questões no Brasil, fale com **Ivan Souza**.
+
+Senior Software Engineer & Technical Lead | Delphi / Object Pascal Legacy System Modernization Specialist
+
+Juiz de Fora, Brazil (Open to Remote / International)
+
+[+55 (43) 99102-5152](tel:+5543991025152) · [ilsouza@gmail.com](mailto:ilsouza@gmail.com) · [linkedin.com/in/ivanlsouza](https://www.linkedin.com/in/ivanlsouza)
+
+**Resumo profissional**
+
+Senior Software Engineer with 20+ years modernizing business-critical Delphi / Object Pascal systems - Unicode and 64-bit migrations with additional hands-on experience in C++, C# and modern software engineering practices, BDE to FireDAC data layers, replacement of discontinued third-party components, and incremental Delphi-to-.NET / Delphi-to-Web transitions. I work at the difficult end of legacy: codebases that cannot be rewritten, cannot go down, and have to keep running while they change. That means reading twenty-year-old code carefully, planning migrations that ship in stages, and leaving a codebase a maintaining team can actually own. Technical lead experience across distributed, cross-timezone teams in Brazil, Italy, Poland and Belgium - setting architecture direction, reviewing code, and mentoring developers. Fluent in English. After 20 years in consulting, seeking a permanent, fully remote Senior Delphi Engineer or Technical Lead role with an employer outside Brazil.
+
 ### 1. Objetivo
 
 Conectar um BI externo ao schema `BMPUBLIC` no Oracle Autonomous AI Database e ler um relatório sem alterar os dados. No fim, você explica por que existe um usuário separado, só de leitura, e sabe qual tabela ou view serve para quê.
