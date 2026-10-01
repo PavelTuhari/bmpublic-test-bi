@@ -39,6 +39,21 @@ def secrets_dir() -> Path:
     return local
 HOST = "127.0.0.1"
 PORT = 8765
+PREFIX = os.environ.get("BMPUBLIC_PREFIX", "").rstrip("/")
+
+
+def pub(path: str) -> str:
+    if not path.startswith("/"):
+        path = "/" + path
+    return PREFIX + path
+
+
+def strip_prefix(path: str) -> str:
+    if PREFIX and (path == PREFIX or path.startswith(PREFIX + "/")):
+        path = path[len(PREFIX):] or "/"
+    return path.rstrip("/") or "/"
+
+
 WINDOW_FROM = "2025-01-01"
 WINDOW_TO = "2027-01-01"
 
@@ -47,6 +62,7 @@ MONTH_RE = re.compile(r"^20\d{2}-(0[1-9]|1[0-2])$")
 MONTHS = {
     "ru": "янв фев мар апр май июн июл авг сен окт ноя дек".split(),
     "ro": "ian feb mar apr mai iun iul aug sep oct noi dec".split(),
+    "pt": "jan fev mar abr mai jun jul ago set out nov dez".split(),
 }
 TIP_CODES = ("O", "P", "M", "T", "F", "L")
 STR = {
@@ -270,9 +286,120 @@ STR = {
         "tip_F": "mijloace fixe",
         "tip_L": "producție",
     },
+    "pt": {
+        "nav_home": "Painel",
+        "nav_orgs": "Organizações",
+        "nav_products": "Produtos",
+        "nav_articles": "Artigos",
+        "nav_docs": "Documentos",
+        "nav_dict": "Cadastro",
+        "brand_mark": "teste BI",
+        "subtitle": "Cópia no ADB26AI, só leitura, schema BMPUBLIC. Calculado em {stamp}.",
+        "foot_before": "Fonte da descrição da conexão:",
+        "foot_after": "Usuário BMPUBLIC_BI, serviço adb26ai_medium. Os valores estão em lei, como no campo SUMA.",
+        "loading_title": "Carregando",
+        "loading_h": "Calculando os agregados",
+        "loading_p": "A primeira abertura lê os lançamentos e o diário de movimentos em Frankfurt. Em geral leva menos de um minuto.",
+        "error_adb": "Não foi possível ler o ADB",
+        "retry": "Tentar de novo",
+        "no_rows": "Não há linhas.",
+        "no_page": "Página inexistente",
+        "no_page_p": "Esta página não existe.",
+        "error_title": "Erro",
+        "kpi_univers": "fichas no cadastro",
+        "kpi_docs": "documentos",
+        "kpi_cm": "lançamentos contábeis",
+        "kpi_moves": "movimentos com data em 2025–2026",
+        "kpi_turnover": "movimento dos lançamentos, lei",
+        "aug_note": "Agosto de 2025 — {money} lei em {n} lançamentos. No gráfico de movimento abaixo este mês fica de fora, para os outros aparecerem.",
+        "h_docs_month": "Documentos por mês",
+        "h_moves": "Movimentos de produtos, lei",
+        "moves_note": "TXSLD, só as linhas com data em 2025–2026.",
+        "h_turnover": "Movimento dos lançamentos sem agosto de 2025",
+        "h_orgs": "Organizações no débito",
+        "orgs_note": "Ficha de tipo O no campo DTDEP. O valor do lançamento inteiro fica nesta ficha.",
+        "orgs_more": "Todas as {n} fichas com maior movimento",
+        "h_articles": "Artigos de operação",
+        "articles_note": "Ficha de tipo T na analítica de débito. Valor positivo é entrada, valor negativo é pagamento.",
+        "articles_more": "Todos os {n} artigos",
+        "h_products": "Produtos no diário de movimentos",
+        "products_note": "Topo pelo módulo do valor em TXSLD para 2025–2026. A quantidade vem de CANT, as unidades mudam.",
+        "products_more": "Todos os {n} itens",
+        "h_accounts": "Contas de débito",
+        "h_dict_journals": "Cadastro e diários",
+        "journals_note": "Diários dos documentos, campo TIP:",
+        "h_limits": "O que esta cópia não traz por completo",
+        "lim_tsld": "Saldo TSLD: {n} linhas. O saldo vivo não entra no arquivo de BI.",
+        "lim_txsld": "Em TXSLD sem data: {empty}. Fora de 2025–2026: {junk} (anos como 225 e 5202). Não entram nos relatórios.",
+        "lim_codf": "Em todos os documentos o campo CODF é 0, não há parceiro no cabeçalho. A organização vem do lançamento.",
+        "lim_snap": "Instantâneo do dump 20260930_1952. A atualização levou {seconds} s.",
+        "refresh": "Recalcular no ADB",
+        "th_card": "Ficha",
+        "th_postings": "Lançamentos",
+        "th_sum": "Valor",
+        "th_article": "Artigo",
+        "th_item": "Item",
+        "th_rows": "Linhas",
+        "th_qty": "Quantidade",
+        "th_account": "Conta",
+        "th_pieces": "Qtd.",
+        "th_type": "Tipo da ficha",
+        "th_journal": "Diário",
+        "th_docs": "Documentos",
+        "th_code": "Código",
+        "th_name": "Nome",
+        "th_um": "Un.",
+        "th_arch": "Arquivo",
+        "th_date": "Data",
+        "th_number": "Número",
+        "th_currency": "Moeda",
+        "th_doc": "Documento",
+        "th_debit": "Débito",
+        "th_credit": "Crédito",
+        "th_org": "Organização",
+        "th_analytic": "Analítica",
+        "orgs_h": "Organizações e departamentos",
+        "orgs_lead": "Fichas de tipo O com o maior módulo do valor no débito do lançamento (DTDEP).",
+        "products_h": "Produtos",
+        "products_lead": "Diário TXSLD, de 01.01.2025 a 31.12.2026, ficha de tipo P. Ordenadas pelo módulo do valor.",
+        "articles_h": "Artigos de operação",
+        "articles_lead": "Analítica de débito, tipo T. «Incasari din vanzari» são entradas, valores negativos são pagamentos.",
+        "docs_h": "Documentos",
+        "docs_lead": "Cabeçalho TMDB_DOCS. O parceiro em CODF não está preenchido em nenhum documento. O número é NRMANUAL e, numa parte dos documentos, está vazio.",
+        "docs_all_months": "todos os meses",
+        "docs_all_journals": "todos os diários",
+        "docs_month": "Mês",
+        "docs_journal": "Diário",
+        "docs_number": "Número",
+        "docs_ph": "parte do número",
+        "docs_show": "Mostrar",
+        "docs_shown": "São mostradas as primeiras {n} linhas.",
+        "entries_h": "Lançamentos",
+        "entries_need": "Abra um mês no painel, uma organização ou um documento. Sem filtro eu não leio as 122 mil linhas.",
+        "entries_lead": "Até 80 linhas. A organização é a analítica de débito, a analítica DTSC é a ficha analítica.",
+        "card_n": "ficha {n}",
+        "doc_n": "documento {n}",
+        "dict_h": "Cadastro TMS_UNIVERS",
+        "dict_type": "Tipo",
+        "dict_name": "Nome",
+        "dict_ph": "parte do nome",
+        "dict_all": "todos os tipos",
+        "dict_find": "Buscar",
+        "dict_pick": "Escolha o tipo ou digite parte do nome. O cadastro tem {total} fichas e não é mostrado inteiro.",
+        "dict_several": "alguns milhares",
+        "yes": "sim",
+        "tip_none": "sem tipo",
+        "tip_O": "organizações",
+        "tip_P": "produtos",
+        "tip_M": "materiais",
+        "tip_T": "artigos de operação",
+        "tip_F": "ativos imobilizados",
+        "tip_L": "produção",
+    },
 }
-if set(STR["ru"]) != set(STR["ro"]):
-    missing = set(STR["ru"]) ^ set(STR["ro"])
+_lang_keys = [set(STR[code]) for code in ("ru", "ro", "pt")]
+if not all(keys == _lang_keys[0] for keys in _lang_keys):
+    missing = set().union(*_lang_keys) - set.intersection(*_lang_keys)
     raise RuntimeError("traduceri incomplete: " + ", ".join(sorted(missing)))
 
 STATE = {"status": "loading", "error": "", "model": None, "at": None}
@@ -575,14 +702,51 @@ def bars(items: list[tuple]) -> str:
     return "\n".join(parts)
 
 
+IVAN_SUMMARY = (
+    "Senior Software Engineer with 20+ years modernizing business-critical "
+    "Delphi / Object Pascal systems - Unicode and 64-bit migrations with "
+    "additional hands-on experience in C++, C# and modern software engineering "
+    "practices, BDE to FireDAC data layers, replacement of discontinued "
+    "third-party components, and incremental Delphi-to-.NET / Delphi-to-Web "
+    "transitions. I work at the difficult end of legacy: codebases that cannot "
+    "be rewritten, cannot go down, and have to keep running while they change. "
+    "That means reading twenty-year-old code carefully, planning migrations "
+    "that ship in stages, and leaving a codebase a maintaining team can "
+    "actually own. Technical lead experience across distributed, cross-timezone "
+    "teams in Brazil, Italy, Poland and Belgium - setting architecture "
+    "direction, reviewing code, and mentoring developers. Fluent in English. "
+    "After 20 years in consulting, seeking a permanent, fully remote Senior "
+    "Delphi Engineer or Technical Lead role with an employer outside Brazil."
+)
+
+
+def brazil_contact() -> str:
+    if lang() != "pt":
+        return ""
+    return (
+        "<section class='card ivan'>"
+        "<p class='ivan-kicker'>Para questões no Brasil, fale com</p>"
+        "<h2>Ivan Souza</h2>"
+        "<p>Senior Software Engineer &amp; Technical Lead | "
+        "Delphi / Object Pascal Legacy System Modernization Specialist</p>"
+        "<p>Juiz de Fora, Brazil (Open to Remote / International)</p>"
+        "<p><a href='tel:+5543991025152'>+55 (43) 99102-5152</a>"
+        " · <a href='mailto:ilsouza@gmail.com'>ilsouza@gmail.com</a>"
+        " · <a href='https://www.linkedin.com/in/ivanlsouza'>linkedin.com/in/ivanlsouza</a></p>"
+        "<h3>Resumo profissional</h3>"
+        f"<p>{esc(IVAN_SUMMARY)}</p>"
+        "</section>"
+    )
+
+
 def page(title: str, body: str, active: str) -> bytes:
     links = [
-        ("/", "nav_home", "home"),
-        ("/orgs", "nav_orgs", "orgs"),
-        ("/products", "nav_products", "products"),
-        ("/articles", "nav_articles", "articles"),
-        ("/docs", "nav_docs", "docs"),
-        ("/dict", "nav_dict", "dict"),
+        (pub("/"), "nav_home", "home"),
+        (pub("/orgs"), "nav_orgs", "orgs"),
+        (pub("/products"), "nav_products", "products"),
+        (pub("/articles"), "nav_articles", "articles"),
+        (pub("/docs"), "nav_docs", "docs"),
+        (pub("/dict"), "nav_dict", "dict"),
     ]
     nav = []
     for href, key_name, key in links:
@@ -590,9 +754,10 @@ def page(title: str, body: str, active: str) -> bytes:
         nav.append(f"<a href='{href}'{cls}>{esc(tr(key_name))}</a>")
     current = lang()
     langs = []
-    for code, label in (("ru", "Русский"), ("ro", "Română")):
+    for code, label in (("ru", "Русский"), ("ro", "Română"), ("pt", "Português")):
         cls = " class='on'" if code == current else ""
-        langs.append(f"<a href='/lang/{code}'{cls}>{label}</a>")
+        langs.append(f"<a href='{pub('/lang/' + code)}'{cls}>{label}</a>")
+    html_lang = {"pt": "pt-BR"}.get(current, current)
     with STATE_LOCK:
         status = STATE["status"]
         when = STATE["at"]
@@ -600,7 +765,7 @@ def page(title: str, body: str, active: str) -> bytes:
     if status == "ready" and when:
         stamp = when.strftime("%d.%m.%Y %H:%M")
     doc = f"""<!DOCTYPE html>
-<html lang="{current}">
+<html lang="{html_lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -657,6 +822,11 @@ a {{ color: var(--green); }}
 .track {{ background: #efe8dc; height: 0.7rem; border-radius: 99px; }}
 .fill {{ display: block; height: 100%; background: var(--green); border-radius: 99px; }}
 .note {{ background: var(--green-soft); border-radius: 10px; padding: 0.7rem 0.9rem; }}
+.ivan {{ margin: 0 0 1rem; }}
+.ivan h2 {{ margin: 0.1rem 0 0.35rem; }}
+.ivan h3 {{ font-size: 1rem; margin: 0.85rem 0 0.3rem; }}
+.ivan-kicker {{ color: var(--brown); margin: 0; }}
+.ivan p {{ margin: 0.28rem 0; }}
 form {{ display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: end; margin: 0.6rem 0 1rem; }}
 label {{ display: flex; flex-direction: column; font-size: 0.85rem; color: var(--muted); }}
 input, select, button {{
@@ -678,6 +848,7 @@ footer {{ color: var(--muted); font-size: 0.88rem; margin-top: 1.6rem; }}
 <nav><span class="links">{''.join(nav)}</span><span class="langs">{''.join(langs)}</span></nav>
 </div></header>
 <main>
+{brazil_contact()}
 {body}
 <footer>
 {esc(tr("foot_before"))} <a href="http://130.61.108.5/bi/">130.61.108.5/bi</a>.
@@ -693,7 +864,7 @@ def waiting(status: str, error: str) -> bytes:
     if status == "error":
         body = (
             f"<h2>{esc(tr('error_adb'))}</h2><p>{esc(error)}</p>"
-            f"<p><a href='/refresh'>{esc(tr('retry'))}</a></p>"
+            f"<p><a href='{pub('/refresh')}'>{esc(tr('retry'))}</a></p>"
         )
     else:
         body = (
@@ -762,7 +933,7 @@ def home() -> bytes:
         )
     docs_chart = bars(
         [
-            (month_label(r["YM"]), float(r["N"]), "/docs?month=" + r["YM"])
+            (month_label(r["YM"]), float(r["N"]), pub("/docs?month=" + r["YM"]))
             for r in model["docs_month"]
         ]
     )
@@ -774,7 +945,7 @@ def home() -> bytes:
     )
     org_rows = [
         [
-            f"<a href='/entries?org={int(r['COD'])}'>{esc(r['NAME'])}</a>",
+            f"<a href='{pub('/entries?org=' + str(int(r['COD'])))}'>{esc(r['NAME'])}</a>",
             num(r["N"]),
             signed(r["SUMA"]),
         ]
@@ -812,19 +983,19 @@ def home() -> bytes:
         <h2>{esc(tr('h_orgs'))}</h2>
         <p class="muted">{esc(tr('orgs_note'))}</p>
         {table([(tr("th_card"), ""), (tr("th_postings"), "num"), (tr("th_sum"), "num")], org_rows)}
-        <p><a href="/orgs">{esc(tr("orgs_more", n=len(model["orgs"])))}</a></p>
+        <p><a href="{pub('/orgs')}">{esc(tr("orgs_more", n=len(model["orgs"])))}</a></p>
       </section>
       <section>
         <h2>{esc(tr('h_articles'))}</h2>
         <p class="muted">{esc(tr('articles_note'))}</p>
         {table([(tr("th_article"), ""), (tr("th_postings"), "num"), (tr("th_sum"), "num")], article_rows)}
-        <p><a href="/articles">{esc(tr("articles_more", n=len(model["articles"])))}</a></p>
+        <p><a href="{pub('/articles')}">{esc(tr("articles_more", n=len(model["articles"])))}</a></p>
       </section>
     </div>
     <h2>{esc(tr('h_products'))}</h2>
     <p class="muted">{esc(tr('products_note'))}</p>
     {table([(tr("th_item"), ""), (tr("th_rows"), "num"), (tr("th_qty"), "num"), (tr("th_sum"), "num")], product_rows)}
-    <p><a href="/products">{esc(tr("products_more", n=len(model["products"])))}</a></p>
+    <p><a href="{pub('/products')}">{esc(tr("products_more", n=len(model["products"])))}</a></p>
     <div class="split">
       <section>
         <h2>{esc(tr('h_accounts'))}</h2>
@@ -844,7 +1015,7 @@ def home() -> bytes:
       <li>{esc(tr('lim_codf'))}</li>
       <li>{esc(tr('lim_snap', seconds=model['seconds']))}</li>
     </ul>
-    <p><a href="/refresh">{esc(tr('refresh'))}</a></p>
+    <p><a href="{pub('/refresh')}">{esc(tr('refresh'))}</a></p>
     """
     return page(tr("nav_home"), body, "home")
 
@@ -855,7 +1026,7 @@ def orgs_page() -> bytes:
         return hold
     records = [
         [
-            f"<a href='/entries?org={int(r['COD'])}'>{esc(r['NAME'])}</a>",
+            f"<a href='{pub('/entries?org=' + str(int(r['COD'])))}'>{esc(r['NAME'])}</a>",
             esc(r["COD"]),
             num(r["N"]),
             signed(r["SUMA"]),
@@ -979,7 +1150,7 @@ def docs_page(query: dict) -> bytes:
         records.append(
             [
                 when,
-                f"<a href='/entries?doc={int(rec['COD'])}'>{esc(rec['COD'])}</a>",
+                f"<a href='{pub('/entries?doc=' + str(int(rec['COD'])))}'>{esc(rec['COD'])}</a>",
                 esc(rec["TIP"] or "—"),
                 esc(rec["NR"] or "—"),
                 esc(rec["VALUTA"] or "—"),
@@ -988,7 +1159,7 @@ def docs_page(query: dict) -> bytes:
     body = f"""
     <h2>{esc(tr('docs_h'))}</h2>
     <p class="muted">{esc(tr('docs_lead'))}</p>
-    <form method="get" action="/docs">
+    <form method="get" action="{pub('/docs')}">
       <label>{esc(tr('docs_month'))}<select name="month">{''.join(month_options)}</select></label>
       <label>{esc(tr('docs_journal'))}<select name="tip">{''.join(tip_options)}</select></label>
       <label>{esc(tr('docs_number'))}<input name="q" value="{esc(q)}" placeholder="{esc(tr('docs_ph'))}"></label>
@@ -1058,7 +1229,7 @@ def entries_page(query: dict) -> bytes:
         records.append(
             [
                 when,
-                f"<a href='/entries?doc={int(rec['NRDOC'])}'>{esc(rec['NRDOC'])}</a>",
+                f"<a href='{pub('/entries?doc=' + str(int(rec['NRDOC'])))}'>{esc(rec['NRDOC'])}</a>",
                 esc(rec["DT"] or "—"),
                 esc(rec["CT"] or "—"),
                 signed(rec["SUMA"]),
@@ -1099,7 +1270,7 @@ def dict_page(query: dict) -> bytes:
         )
     body = f"""
     <h2>{esc(tr('dict_h'))}</h2>
-    <form method="get" action="/dict">
+    <form method="get" action="{pub('/dict')}">
       <label>{esc(tr('dict_type'))}<select name="tip">{''.join(options)}</select></label>
       <label>{esc(tr('dict_name'))}<input name="q" value="{esc(q)}" placeholder="{esc(tr('dict_ph'))}"></label>
       <button type="submit">{esc(tr('dict_find'))}</button>
@@ -1168,13 +1339,11 @@ def chosen_lang(header: str | None, query: dict) -> str:
 
 def safe_back(referer: str | None) -> str:
     if not referer:
-        return "/"
+        return pub("/")
     parsed = urlparse(referer)
-    if parsed.netloc and parsed.hostname not in {"127.0.0.1", "localhost"}:
-        return "/"
-    path = parsed.path or "/"
-    if path.rstrip("/") in {"/lang/ru", "/lang/ro"}:
-        return "/"
+    inner = strip_prefix(parsed.path or "/")
+    if inner.startswith("/lang/"):
+        return pub("/")
     kept = []
     for key, values in parse_qs(parsed.query).items():
         if key == "lang":
@@ -1182,21 +1351,26 @@ def safe_back(referer: str | None) -> str:
         for value in values:
             kept.append((key, value))
     query = urlencode(kept)
-    return path + (("?" + query) if query else "")
+    return pub(inner) + (("?" + query) if query else "")
 
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         parsed = urlparse(self.path)
-        path = parsed.path.rstrip("/") or "/"
+        path = strip_prefix(parsed.path)
         query = parse_qs(parsed.query)
-        if path in {"/lang/ru", "/lang/ro"}:
+        cookie_path = PREFIX or "/"
+        if path.startswith("/lang/"):
             chosen = path.rsplit("/", 1)[-1]
+            if chosen not in STR:
+                body = page(tr("no_page"), f"<p>{esc(tr('no_page_p'))}</p>", "home")
+                self._send(404, body, "text/html; charset=utf-8")
+                return
             self.send_response(302)
             self.send_header("Location", safe_back(self.headers.get("Referer")))
             self.send_header(
                 "Set-Cookie",
-                f"bi_lang={chosen}; Path=/; Max-Age=31536000; SameSite=Lax",
+                f"bi_lang={chosen}; Path={cookie_path}; Max-Age=31536000; SameSite=Lax",
             )
             self.end_headers()
             return
@@ -1209,7 +1383,7 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/refresh":
             refresh_async()
             self.send_response(302)
-            self.send_header("Location", "/")
+            self.send_header("Location", pub("/"))
             self.end_headers()
             return
         LANG.set(chosen_lang(self.headers.get("Cookie"), query))
@@ -1250,7 +1424,7 @@ class Handler(BaseHTTPRequestHandler):
         if sticky:
             self.send_header(
                 "Set-Cookie",
-                f"bi_lang={sticky}; Path=/; Max-Age=31536000; SameSite=Lax",
+                f"bi_lang={sticky}; Path={PREFIX or '/'}; Max-Age=31536000; SameSite=Lax",
             )
         self.end_headers()
         self.wfile.write(body)
@@ -1276,7 +1450,7 @@ def main() -> None:
         return
     refresh_async()
     server = ThreadingHTTPServer((HOST, PORT), Handler)
-    print(f"http://{HOST}:{PORT}/", flush=True)
+    print(f"http://{HOST}:{PORT}{PREFIX or '/'}", flush=True)
     server.serve_forever()
 
 

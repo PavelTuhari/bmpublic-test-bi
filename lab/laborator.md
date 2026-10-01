@@ -25,7 +25,7 @@
 Поверх этой учётки сделаны две вещи:
 
 * страница подключения http://130.61.108.5/bi/ — как подключить DBeaver, Power BI, Tableau или Python;
-* тестовая BI http://130.61.108.5/test-bi/ — один готовый отчёт на русском и румынском. Любой другой BI читает ту же базу тем же способом.
+* тестовая BI http://130.61.108.5/test-bi/ — один готовый отчёт на русском, румынском и португальском (Бразилия). Любой другой BI читает ту же базу тем же способом.
 
 ### 3. Отдельный пользователь только на чтение
 
@@ -205,7 +205,7 @@ Pentru accesul din afară a fost creat contul `BMPUBLIC_BI`. Are `CREATE SESSION
 Peste acest cont sunt două lucruri:
 
 * pagina de conectare http://130.61.108.5/bi/ — cum se leagă DBeaver, Power BI, Tableau sau Python;
-* BI-ul de test http://130.61.108.5/test-bi/ — un raport gata, în rusă și în română. Orice alt BI citește aceeași bază în același fel.
+* BI-ul de test http://130.61.108.5/test-bi/ — un raport gata, în rusă, română și portugheză (Brazilia). Orice alt BI citește aceeași bază în același fel.
 
 ### 3. Un utilizator separat, doar pentru citire
 
@@ -385,7 +385,7 @@ The external account is `BMPUBLIC_BI`. It has `CREATE SESSION` and `SELECT` on t
 Two things sit on top of that account:
 
 * the connection page http://130.61.108.5/bi/ — how to connect DBeaver, Power BI, Tableau or Python;
-* the test BI at http://130.61.108.5/test-bi/ — one finished report, in Russian and Romanian. Any other BI tool reads the same database in the same way.
+* the test BI at http://130.61.108.5/test-bi/ — one finished report, in Russian, Romanian and Brazilian Portuguese. Any other BI tool reads the same database in the same way.
 
 ### 3. A separate read-only user
 
@@ -565,7 +565,7 @@ Para o acesso externo foi criado o usuário `BMPUBLIC_BI`. Ele tem `CREATE SESSI
 Em cima desse usuário há duas coisas:
 
 * a página de conexão http://130.61.108.5/bi/ — como conectar o DBeaver, o Power BI, o Tableau ou o Python;
-* o BI de teste http://130.61.108.5/test-bi/ — um relatório pronto, em russo e em romeno. Qualquer outro BI lê o mesmo banco do mesmo jeito.
+* o BI de teste http://130.61.108.5/test-bi/ — um relatório pronto, em russo, romeno e português (Brasil). Qualquer outro BI lê o mesmo banco do mesmo jeito.
 
 ### 3. Um usuário separado, só de leitura
 
