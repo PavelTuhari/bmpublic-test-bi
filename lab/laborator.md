@@ -2,9 +2,11 @@
 
 Снимок данных: `20260930_1952`. Пароль и кошелёк в этот текст не входят: их выдаёт преподаватель отдельно. Пример готового отчёта: http://130.61.108.5/test-bi/ . Описание подключения: http://130.61.108.5/bi/ .
 
-Языки: русский, румынский, английский, португальский (Бразилия).
+Языки: [русский](#ru), [румынский](#ro), [английский](#en), [португальский (Бразилия)](#pt-br).
 
 ---
+
+<a id="ru"></a>
 
 ## Русский
 
@@ -186,6 +188,8 @@ FETCH FIRST 5 ROWS ONLY;
 
 ---
 
+<a id="ro"></a>
+
 ## Română
 
 ### 1. Scopul
@@ -366,6 +370,8 @@ Se predă un fișier cu interogările, cu cele patru numere de la sarcina 2, cu 
 
 ---
 
+<a id="en"></a>
+
 ## English
 
 ### 1. Aim
@@ -545,6 +551,8 @@ FETCH FIRST 5 ROWS ONLY;
 Hand in a file with the queries, the four numbers from task 2, the error text from task 9, and short answers to tasks 1, 7 and 10. Do not put the password or the wallet in the file.
 
 ---
+
+<a id="pt-br"></a>
 
 ## Português (Brasil)
 
